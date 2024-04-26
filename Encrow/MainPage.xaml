@@ -11,14 +11,16 @@
             <Button
             x:Name="ProveButton"
             Text="Prove" 
-            SemanticProperties.Hint="Buttton for accesing prover functionality"
+                FontSize="20"
+            SemanticProperties.Hint="Button for accesing prover functionality"
             Clicked="OnCounterClicked"
             HorizontalOptions="Fill" /> 
 
             <Button
                 x:Name="VerifyButton"
                 Text="Verify" 
-                SemanticProperties.Hint="C"
+                FontSize="20"
+                SemanticProperties.Hint="Button for accesing verifier functionality"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
         </VerticalStackLayout>
