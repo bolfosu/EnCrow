@@ -3,18 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.ApplicationModel;
+using QRCoder;
 
 namespace Encrow
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ScanQR : ContentPage
+    public partial class QRCodePage : ContentPage
     {
-        public ScanQR()
+        public QRCodePage()
         {
             InitializeComponent();
         }
+
+        private void OnGenerateClicked(object sender, EventArgs e)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(InputText.Text, QRCodeGenerator.ECCLevel.L);
+            PngByteQRCode qRCode = new PngByteQRCode(qrCodeData);
+            byte[] qrCodeBytes = qRCode.GetGraphic(20);
+            QrCodeImage.Source = ImageSource.FromStream(() => new MemoryStream(qrCodeBytes));
+        }
+
     }
 }
+

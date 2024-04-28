@@ -7,6 +7,6 @@
             Text="Authenticate with MitId !"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <Image Source="C:\Users\bolfa\source\repos\Encrow\Encrow\Resources\Images\mitidkvadrat.jpg" Aspect="AspectFit" />
+        <Image Source="Resources/Images/mitidkvadrat.jpg" />
     </VerticalStackLayout>
 </ContentView>
