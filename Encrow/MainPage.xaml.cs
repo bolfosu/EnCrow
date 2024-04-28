@@ -9,9 +9,16 @@
             InitializeComponent();
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+       
+
+        private void ProveButton_Clicked(object sender, EventArgs e)
         {
-           
+            Navigation.PushAsync(new QRCodePage());
+        }
+
+        private void VerifyButton_Clicked(object sender, EventArgs e)
+        {
+             Navigation.PushAsync(new MitId());
         }
     }
 

@@ -1,6 +1,6 @@
 namespace Encrow;
 
-public partial class MitId : ContentView
+public partial class MitId : ContentPage
 {
 	public MitId()
 	{

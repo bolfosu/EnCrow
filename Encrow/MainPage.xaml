@@ -13,7 +13,7 @@
             Text="Prove" 
                 FontSize="20"
             SemanticProperties.Hint="Button for accesing prover functionality"
-            Clicked="OnCounterClicked"
+            Clicked="ProveButton_Clicked"
             HorizontalOptions="Fill" /> 
 
             <Button
@@ -21,7 +21,7 @@
                 Text="Verify" 
                 FontSize="20"
                 SemanticProperties.Hint="Button for accesing verifier functionality"
-                Clicked="OnCounterClicked"
+                Clicked="VerifyButton_Clicked"
                 HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>
