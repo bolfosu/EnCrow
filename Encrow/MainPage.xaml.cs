@@ -2,7 +2,7 @@
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
+      
 
         public MainPage()
         {
@@ -18,7 +18,7 @@
 
         private void VerifyButton_Clicked(object sender, EventArgs e)
         {
-             Navigation.PushAsync(new MitId());
+            Navigation.PushAsync(new MitId());
         }
     }
 
