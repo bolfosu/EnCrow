@@ -10,23 +10,7 @@
             HorizontalOptions="FillAndExpand"
             VerticalOptions="Center">
 
-            <Label
-                Text="Enter Data"
-                SemanticProperties.HeadingLevel="Level1"
-                SemanticProperties.Description="Enter Data"
-                FontSize="18"
-                HorizontalOptions="FillAndExpand" />
-
-            <Frame BorderColor="LightSlateGray"
-                   Padding="10,0">
-                <Entry
-                x:Name="InputText"
-                Text=""
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Enter data here..."
-                FontSize="18"
-                HorizontalOptions="FillAndExpand" />
-            </Frame>
+            
 
             <Button
                 x:Name="GenerateBtn"
