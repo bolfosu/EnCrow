@@ -63,10 +63,14 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="QRCoder" Version="1.5.1" />
+		<PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="MitId.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ProverPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
