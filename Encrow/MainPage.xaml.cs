@@ -18,7 +18,7 @@
 
         private void VerifyButton_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new MitId());
+            Navigation.PushAsync(new VerifierPage());
         }
     }
 
