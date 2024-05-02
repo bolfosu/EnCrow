@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Xamarin.Forms;
 using ZXing.Mobile;
 
 namespace YourNamespace
