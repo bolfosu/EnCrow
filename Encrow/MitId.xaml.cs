@@ -12,14 +12,13 @@ using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Hosting;
+
 
 
 namespace Encrow;
 
 public partial class MitId : ContentPage
-{
+{ /*
 	public MitId()
 	{
 		InitializeComponent();
@@ -106,5 +105,5 @@ public partial class MitId : ContentPage
         });
 
         // omitted for brevity
-    }
+    }*/
 }

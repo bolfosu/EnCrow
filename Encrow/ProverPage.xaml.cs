@@ -1,35 +1,44 @@
-using System.Net.NetworkInformation;
-using ZXing.Mobile;
-using System.Threading.Tasks;
-using Microsoft.Maui.Controls.PlatformConfiguration.Android.App;
-using Android.Content;
-using Android.OS;
-using QRCodeScanner.Droid.Services;
-using Xamarin.Essentials;
+using System;
+using System.Collections.Generic;
+using Xamarin.Forms;
 using ZXing.Mobile;
 
-namespace Encrow;
-
-public partial class ProverPage : ContentPage
+namespace YourNamespace
 {
-	public ProverPage()
-	{
-		InitializeComponent();
-	}
-    public async Task<string> ScanAsync()
+    public partial class YourPage : ContentPage
     {
-        MobileBarcodeScanner.Initialize(Application);
-        var optionsCustom = new MobileBarcodeScanningOptions
+        MobileBarcodeScanner scanner;
+
+        public YourPage()
         {
-            PossibleFormats = new List<ZXing.BarcodeFormat>
+            InitializeComponent();
+            scanner = new MobileBarcodeScanner();
+        }
+
+        async void ScanButton_Clicked(object sender, EventArgs e)
+        {
+            // Initialize scanner options
+            var options = new MobileBarcodeScanningOptions
             {
-                    ZXing.BarcodeFormat.QR_CODE
-                }
-        };
+                // Customize scanning options if needed
+                PossibleFormats = new List<ZXing.BarcodeFormat> { ZXing.BarcodeFormat.QR_CODE }
+            };
 
-        var result = await MobileBarcodeScanner
-            .Scan(optionsCustom);
+            // Start scanning
+            var result = await scanner.Scan(options);
 
-        return result.Text;
+            // Check if a barcode was found
+            if (result != null)
+            {
+                // Handle the scanned barcode result
+                HandleResult(result.Text);
+            }
+        }
+
+        void HandleResult(string resultText)
+        {
+            // Process the result as needed
+            DisplayAlert("Scanned Barcode", resultText, "OK");
+        }
     }
 }
