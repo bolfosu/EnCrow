@@ -1,5 +1,5 @@
 using Camera.MAUI;
-using ZXing.Mobile;
+
 
 namespace Encrow;
 
