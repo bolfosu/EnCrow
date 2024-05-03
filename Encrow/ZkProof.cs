@@ -26,13 +26,32 @@ namespace Encrow
                 return new BigInteger(hashBytes);
             }
         }
-        // Generate public key
-        private static BigInteger GeneratePublicKey(string age)
+         // Generate public key
+    private static BigInteger GeneratePublicKey(string age)
+    {
+        BigInteger wHash = H(age) % 17; // Hash the age and take modulo 17
+        w = wHash;
+        return BigInteger.ModPow(g, wHash, p); // Compute g^w mod p
+    }
+        // Commitment phase
+        public static (BigInteger, BigInteger) Commit(string age)
         {
-            BigInteger wHash = H(age) % 17; // Hash the age and take modulo 17
-            w = wHash;
-            return BigInteger.ModPow(g, wHash, p); // Compute g^w mod p
+            BigInteger r;
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            {
+                byte[] bytes = new byte[16];
+                rng.GetBytes(bytes);
+                r = new BigInteger(bytes);
+            }
+
+            BigInteger a = BigInteger.ModPow(g, r, p); // Compute g^r mod p
+            BigInteger c = H(a.ToString()); // Compute hash of a
+
+            BigInteger z = (r + (w * c)) % q; // Compute z = r + wc mod q
+
+            return (a, z);
         }
+
 
 
     }
