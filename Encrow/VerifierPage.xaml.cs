@@ -9,6 +9,10 @@ public partial class VerifierPage : ContentPage
     public VerifierPage()
 	{
 		InitializeComponent();
+        cameraView.BarCodeOptions = new(){
+        TryHarder = true,
+            
+        };
 
     }
     private void cameraView_CamerasLoaded(object sender, EventArgs e)
