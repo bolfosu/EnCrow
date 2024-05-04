@@ -1,16 +1,19 @@
 using Camera.MAUI;
+using System.Numerics;
 
 
 namespace Encrow;
 
 public partial class VerifierPage : ContentPage
 {
+    private ZkProof ageProof;
     
     public VerifierPage()
 	{
 		InitializeComponent();
         cameraView.BarCodeOptions = new(){
         TryHarder = true,
+
             
         };
 
@@ -35,6 +38,8 @@ public partial class VerifierPage : ContentPage
             barcodeResult.Text = $"{args.Result[0].BarcodeFormat}: {args.Result[0].Text}";
         });
     }
+
+   
 }
 
 
