@@ -17,7 +17,7 @@ namespace Encrow
         private static BigInteger w;      // Private key (user age)
 
         // Hash function
-        private static BigInteger H(string input)
+        private static BigInteger H(BigInteger input)
         {
             using (SHA256 sha256 = SHA256.Create())
             {
@@ -27,14 +27,14 @@ namespace Encrow
             }
         }
          // Generate public key
-    private static BigInteger GeneratePublicKey(string age)
+    private static BigInteger GeneratePublicKey(BigInteger w)
     {
-            BigInteger wHash = H(age) % 17; // Hash the age and take modulo 17
+            BigInteger wHash = H(w) % 17; // Hash the age and take modulo 17
             w = wHash;
             return BigInteger.ModPow(g, wHash, p); // Compute g^w mod p
         }
         // Commitment phase
-        public static (BigInteger, BigInteger) Commit(string age)
+        public static (BigInteger, BigInteger) Commit(BigInteger w)
         {
             BigInteger r;
             using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
@@ -45,7 +45,7 @@ namespace Encrow
             }
 
             BigInteger a = BigInteger.ModPow(g, r, p); // Compute g^r mod p
-            BigInteger c = H(a.ToString()); // Compute hash of a
+            BigInteger c = H(a); // Compute hash of a
 
             BigInteger z = (r + (w * c)) % q; // Compute z = r + wc mod q
 
