@@ -21,13 +21,18 @@ namespace Encrow
         {
             using (SHA256 sha256 = SHA256.Create())
             {
-                byte[] inputBytes = System.Text.Encoding.UTF8.GetBytes(input);
+                // Convert the BigInteger to a byte array
+                byte[] inputBytes = input.ToByteArray();
+
+                // Compute the hash
                 byte[] hashBytes = sha256.ComputeHash(inputBytes);
+
+                // Create a new BigInteger from the hash bytes
                 return new BigInteger(hashBytes);
             }
         }
-         // Generate public key
-    private static BigInteger GeneratePublicKey(BigInteger w)
+        // Generate public key
+        private static BigInteger GeneratePublicKey(BigInteger w)
     {
             BigInteger wHash = H(w) % 17; // Hash the age and take modulo 17
             w = wHash;
