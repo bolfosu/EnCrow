@@ -1,29 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Encrow.MainPage">
+             x:Class="Encrow.MainPage"
+             Title="Encrow">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
+    
+    <ScrollView BackgroundColor="#f2f2f2">
+        <StackLayout Padding="30,50" Spacing="25">
+            
 
-            <Button
-            x:Name="ProveButton"
-            Text="Prove" 
-                FontSize="20"
-            SemanticProperties.Hint="Button for accesing prover functionality"
-            Clicked="ProveButton_Clicked"
-            HorizontalOptions="Fill" /> 
+            <!-- Buttons -->
+            <Button x:Name="ProveButton" Text="Prove" FontSize="20" BackgroundColor="#007bff" TextColor="White" 
+                    Clicked="ProveButton_Clicked" CornerRadius="10" HorizontalOptions="FillAndExpand"/>
 
-            <Button
-                x:Name="VerifyButton"
-                Text="Verify" 
-                FontSize="20"
-                SemanticProperties.Hint="Button for accesing verifier functionality"
-                Clicked="VerifyButton_Clicked"
-                HorizontalOptions="Fill" />
-        </VerticalStackLayout>
+            <Button x:Name="VerifyButton" Text="Verify" FontSize="20" BackgroundColor="#28a745" TextColor="White" 
+                    Clicked="VerifyButton_Clicked" CornerRadius="10" HorizontalOptions="FillAndExpand"/>
+        </StackLayout>
     </ScrollView>
 
 </ContentPage>
