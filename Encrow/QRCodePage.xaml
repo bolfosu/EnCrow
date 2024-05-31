@@ -14,10 +14,11 @@
 
             <Button
                 x:Name="GenerateBtn"
-                Text="CLICK ME"
+                Text="Generate proof"
                 SemanticProperties.Hint="Generate the QR code when you click"
                 Clicked="OnGenerateClicked"
-                HorizontalOptions="FillAndExpand" />
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="Start"/>
             <Frame BorderColor="LightSlateGray"
                    BackgroundColor="White"
                    Padding="10">
