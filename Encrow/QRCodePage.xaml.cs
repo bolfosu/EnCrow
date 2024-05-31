@@ -15,6 +15,7 @@ namespace Encrow
         public QRCodePage()
         {
             InitializeComponent();
+            this.Appearing += QRCodePage_Selfie;
         }
 
         private void OnGenerateClicked(object sender, EventArgs e)
@@ -25,7 +26,11 @@ namespace Encrow
             byte[] qrCodeBytes = qRCode.GetGraphic(20);
             QrCodeImage.Source = ImageSource.FromStream(() => new MemoryStream(qrCodeBytes));
         }
-
+        private void QRCodePage_Selfie(object sender, System.EventArgs e)
+        {
+            // Load the image when the page is appearing
+            UserSelfie.Source = ImageSource.FromFile("Resources/Images/mitidkvadrat.png");
+        }
     }
 }
 

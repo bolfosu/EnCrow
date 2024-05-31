@@ -10,15 +10,16 @@
             HorizontalOptions="FillAndExpand"
             VerticalOptions="Center">
 
-
+           
 
             <StackLayout Spacing="10">
-                
-                
-                <Frame BorderColor="LightSlateGray" BackgroundColor="White" Padding="10">
-                    <Image x:Name="UserPhoto" HeightRequest="300" WidthRequest="200"/>
+
+                <Frame BorderColor="LightSlateGray" BackgroundColor="White" Padding="10" Margin="0,0,0,20">
+                    <Image x:Name="UserSelfie" HeightRequest="300" WidthRequest="200"/>
                 </Frame>
-                <Frame BorderColor="LightSlateGray" BackgroundColor="White" Padding="10">
+
+
+                <Frame BorderColor="LightSlateGray" BackgroundColor="White" Padding="10" Margin="0,0,0,20">
                     <Image x:Name="QrCodeImage" HeightRequest="300" WidthRequest="200"/>
                 </Frame>
                 <Button x:Name="GenerateBtn" Text="Generate proof" Clicked="OnGenerateClicked" HorizontalOptions="FillAndExpand"/>

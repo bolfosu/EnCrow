@@ -70,7 +70,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Resources\Images\mitidkvadrat.jpg" />
+	  <None Remove="mitidkvadrat.png" />
+	  <None Remove="Resources\Images\mitidkvadrat.jpg" />
+	  <None Remove="Resources\Images\mitidkvadrat.png" />
 	</ItemGroup>
 
 	<ItemGroup>
