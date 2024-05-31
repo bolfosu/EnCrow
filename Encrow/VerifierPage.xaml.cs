@@ -6,12 +6,7 @@ namespace Encrow;
 
 public partial class VerifierPage : ContentPage
 {
-    private static BigInteger p = 11; // Prime modulus
-    private static BigInteger g = 5;  // Generator
-    private static BigInteger q = 5;  // Prime order
-    private static BigInteger w = 33;      // Private key (user age)
-    private static BigInteger a;
-    private static BigInteger z;
+   
 
     public VerifierPage()
 	{

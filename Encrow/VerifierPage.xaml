@@ -10,7 +10,7 @@
             Padding="30,0"
             VerticalOptions="Center">
 
-            <Label x:Name="barcodeResult" FontSize="20"/>
+            <Label x:Name="barcodeResult" FontSize="20" TextColor="White"/>
             <cv:CameraView x:Name="cameraView" WidthRequest="300" HeightRequest="200" CamerasLoaded="cameraView_CamerasLoaded" BarCodeDetectionEnabled="True"
                            BarcodeDetected="cameraView_BarcodeDetected"/>
 
