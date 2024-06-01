@@ -6,40 +6,42 @@ namespace Encrow;
 
 public partial class VerifierPage : ContentPage
 {
-   
+
 
     public VerifierPage()
-	{
-		InitializeComponent();
-        cameraView.BarCodeOptions = new(){
-        TryHarder = true,
+    {
+        InitializeComponent();
+        barcodeReader.Options = new ZXing.Net.Maui.BarcodeReaderOptions
+        {
 
+            Formats = ZXing.Net.Maui.BarcodeFormat.QrCode,
+            AutoRotate = true,
+            Multiple = true,
             
         };
 
     }
-    private void cameraView_CamerasLoaded(object sender, EventArgs e)
+
+    private void barcodeReader_BarcodeDetected(object sender, ZXing.Net.Maui.BarcodeDetectionEventArgs e)
+        
     {
-        if (cameraView.Cameras.Count > 0)
+        var first = e.Results.FirstOrDefault();
+        if (first == null)
         {
-            cameraView.Camera = cameraView.Cameras.First();
-            MainThread.BeginInvokeOnMainThread(async () =>
+            return;
+
+            Dispatcher.DispatchAsync(async () =>
             {
-                await cameraView.StopCameraAsync();
-                await cameraView.StartCameraAsync();
+                await DisplayAlert("Barcode detected", first.Value, "OK");
             });
         }
     }
-
-    private void cameraView_BarcodeDetected(object sender, Camera.MAUI.ZXingHelper.BarcodeEventArgs args)
-    {
-        MainThread.BeginInvokeOnMainThread(() =>
-        {
-            barcodeResult.Text = $"{args.Result[0].BarcodeFormat}: {args.Result[0].Text}";
-        });
-    }
+}
+   
 
    
-}
+
+   
+
 
 
