@@ -25,7 +25,7 @@ public partial class VerifierPage : ContentPage
             cameraView.Camera = cameraView.Cameras.First();
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                await cameraView.StopCameraAsync();
+                
                 await cameraView.StartCameraAsync();
             });
         }
