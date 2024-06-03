@@ -11,10 +11,11 @@ public partial class VerifierPage : ContentPage
     public VerifierPage()
 	{
 		InitializeComponent();
-        cameraView.BarCodeOptions = new(){
-        TryHarder = true,
+        cameraView.BarCodeOptions = new()
+        {
+            TryHarder = true,
 
-            
+
         };
 
     }
@@ -25,7 +26,7 @@ public partial class VerifierPage : ContentPage
             cameraView.Camera = cameraView.Cameras.First();
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                
+                await cameraView.StopCameraAsync();
                 await cameraView.StartCameraAsync();
             });
         }
@@ -39,7 +40,7 @@ public partial class VerifierPage : ContentPage
         });
     }
 
-   
+
 }
 
 
