@@ -76,9 +76,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Remove="PinCodesPage.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="mitidkvadrat.png" />
 	  <None Remove="Resources\Images\mitidkvadrat.jpg" />
 	  <None Remove="Resources\Images\mitidkvadrat.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="PinCodesPage.xaml">
+	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -86,6 +96,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.5.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="PinCodes.Authorization.Maui" Version="1.0.1" />
 		<PackageReference Include="QRCoder" Version="1.5.1" />
 	</ItemGroup>
 
