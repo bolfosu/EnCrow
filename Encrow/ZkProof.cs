@@ -4,21 +4,22 @@ namespace Encrow
 {
     public class ZkProof
     {
-        private readonly int _primeModulus;
-        private readonly int _generator;
-        private readonly int _primeOrder;
-        private readonly int _secretValue;
+        private readonly int _primeModulus = 23 ;
+        private readonly int _generator = 3 ;
+        private readonly int _primeOrder = 11 ;
+     
 
-        public ZkProof(int primeModulus, int generator, int primeOrder, int secretValue)
+        public ZkProof(int primeModulus, int generator, int primeOrder)
         {
             _primeModulus = primeModulus;
             _generator = generator;
             _primeOrder = primeOrder;
-            _secretValue = secretValue;
+           
         }
 
         public (int, int) ProveKnowledge(int _secretValue)
         {
+            
 
             using (var rng = RandomNumberGenerator.Create()) // Use a secure random number generator
             {
@@ -32,10 +33,11 @@ namespace Encrow
                 int hashValue = HashFunction(commitment);
                 int response = (randomInteger + (_secretValue * hashValue)) % _primeOrder;
 
-                return (commitment, response);
+                return ( commitment, response);
+                
             }
         }
-
+        
         private static int ModPow(int baseValue, int exponent, int modulus)
         {
             int result = 1;
@@ -52,14 +54,25 @@ namespace Encrow
         }
 
         public static int HashFunction(int value)
+{
+    using (var sha256 = SHA256.Create())
+    {
+        byte[] bytes = BitConverter.GetBytes(value);
+        byte[] hash = sha256.ComputeHash(bytes);
+
+        // Truncate the hash to fit within the int range
+        int hashValue = BitConverter.ToInt32(hash, 0);
+
+        // Adjust for negative values (optional)
+        if (hashValue < 0)
         {
-            using (var sha256 = SHA256.Create())
-            {
-                byte[] bytes = BitConverter.GetBytes(value);
-                byte[] hash = sha256.ComputeHash(bytes);
-                return ConvertToInt(hash);
-            }
+            hashValue += int.MaxValue; // Wrap around to positive range (adjust as needed)
         }
+
+        return hashValue;
+    }
+}
+
 
         private static int ConvertToInt(byte[] hash)
         {
