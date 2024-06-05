@@ -1,63 +1,60 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Numerics;
-using System.Security.Cryptography;
+using static System.Random;
+
 
 namespace Encrow
 {
-    internal class ZkProof
+
+
+    public class ZkProof
     {
-        
-        private static BigInteger p = 11; // Prime modulus
-        private static BigInteger g = 5;  // Generator
-        private static BigInteger q = 5;  // Prime order
-        private static BigInteger w;      // Private key (user age)
+        private readonly int _primeModulus = 11;
+        private readonly int _generator = 5;
+        private readonly int _privateKey = 23;
+        private readonly int _randomValue;
 
-        // Hash function
-        private static BigInteger H(BigInteger input)
+        public int GeneratePublicKey()
         {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                // Convert the BigInteger to a byte array
-                byte[] inputBytes = input.ToByteArray();
-
-                // Compute the hash
-                byte[] hashBytes = sha256.ComputeHash(inputBytes);
-
-                // Create a new BigInteger from the hash bytes
-                return new BigInteger(hashBytes);
-            }
+            return ModPow(_generator, _privateKey, _primeModulus);
         }
-        // Generate public key
-        private static BigInteger GeneratePublicKey(BigInteger w)
-    {
-            BigInteger wHash = H(w) % 17; // Hash the age and take modulo 17
-            w = wHash;
-            return BigInteger.ModPow(g, wHash, p); // Compute g^w mod p
-        }
-        // Commitment phase
-        public static (BigInteger, BigInteger) Commit(BigInteger w)
+
+        public (int, int) GenerateCommitment(int randomValue)
         {
-            BigInteger r;
-            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
-            {
-                byte[] bytes = new byte[16];
-                rng.GetBytes(bytes);
-                r = new BigInteger(bytes);
-            }
+            Random random = new Random();
+            int _randomValue = random.Next(1, int.MaxValue); 
 
-            BigInteger a = BigInteger.ModPow(g, r, p); // Compute g^r mod p
-            BigInteger c = H(a); // Compute hash of a
+            int commitment = ModPow(_generator, _randomValue, _primeModulus);
+            int hash = HashFunction(commitment.ToString()); // Convert commitment to string for hashing
+            int challenge = (randomValue + _privateKey * hash) % 5; // Use prime order q for modulo
 
-            BigInteger z = (r + (w * c)) % q; // Compute z = r + wc mod q
-
-            return (a, z);
+            return (commitment, challenge);
         }
 
+        private static int ModPow(int baseValue, int exponent, int modulus)
+        {
+            long result = 1;
+            while (exponent > 0)
+            {
+                if ((exponent & 1) == 1)
+                {
+                    result = (result * baseValue) % modulus;
+                }
+                exponent >>= 1;
+                baseValue = (baseValue * baseValue) % modulus;
+            }
+            return (int)result;
+        }
 
-
+        // Simple hash function (replace with a secure hash function like SHA-256 in a real application)
+        private int HashFunction(string data)
+        {
+            int hash = 0;
+            foreach (char c in data)
+            {
+                hash = (hash * 31 + (int)c) % _primeModulus; // Use prime modulus for modulo operation
+            }
+            return hash;
+        }
     }
 }
