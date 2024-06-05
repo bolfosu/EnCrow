@@ -18,7 +18,7 @@ namespace Encrow
         {
             InitializeComponent();
             this.Appearing += QRCodePage_Selfie;
-            zkProof = new ZkProof(23, 3, 11); 
+            zkProof = new ZkProof(); 
         }
 
         private void OnGenerateClicked(object sender, EventArgs e)

@@ -4,14 +4,13 @@ using Camera.MAUI;
 using QRCoder;
 using System.Text.RegularExpressions;
 
-
 namespace Encrow
 {
     public partial class VerifierPage : ContentPage
     {
-        private readonly int _primeModulus = 23; 
+        private readonly int _primeModulus = 23;
         private readonly int _generator = 3;
-        private readonly int publicKey = 5;
+        private readonly int publicKey = 2;
 
         public VerifierPage()
         {
@@ -20,7 +19,7 @@ namespace Encrow
             {
                 TryHarder = true,
             };
-            cameraView.BarCodeDetectionEnabled = true; 
+            cameraView.BarCodeDetectionEnabled = true;
         }
 
         private void cameraView_CamerasLoaded(object sender, EventArgs e)
@@ -45,7 +44,7 @@ namespace Encrow
 
                 // Regular expression for colon-separated values with optional whitespace and negative response
                 string pattern = @"^\s*(\d+|-?\d+)\s*,\s*(\d+)\s*(\n*)*$";
-            
+
                 Match match = Regex.Match(qrCodeData, pattern);
                 if (!match.Success)
                 {
@@ -70,37 +69,37 @@ namespace Encrow
                     response = int.Parse(responseString); // Positive value
                 }
 
-                // Perform verification
+                // Perform verification with SimpleHash challenge computation (for demonstration purposes)
                 bool verified = Verify(commitment, response);
 
                 barcodeResult.Text = verified ? "Good" : "Not Good";
             });
         }
 
-
         private bool Verify(int commitment, int response)
         {
-            // Calculate expected value (without hash function)
-            BigInteger expectedValue = BigInteger.Pow(_generator, response) * BigInteger.Pow(publicKey, commitment) % _primeModulus;
+            // Calculate hash value using SimpleHash (not cryptographically secure)
+            int hashValue = SimpleHash(commitment);
 
-            // Check if the equation holds
-            return commitment == (int)expectedValue;
+            // Calculate left side of the formula (generator raised to power of response)
+            BigInteger leftSide = BigInteger.Pow(_generator, response) % _primeModulus;
+
+            // Calculate right side of the formula (public key raised to hash value, multiplied by commitment)
+            BigInteger rightSide = (BigInteger.Pow(publicKey, hashValue) * commitment) % _primeModulus;
+
+            // Verify congruence (remainders after division by prime modulus)
+            return leftSide == rightSide;
         }
 
-
-       
-
-        private static int ConvertToInt(byte[] hash)
+        public static int SimpleHash(int data)
         {
-            int hashValue = 0;
-            for (int i = 0; i < hash.Length; i++)
+            int hash = 0;
+            string dataString = Convert.ToString(data, 16); // Convert integer to hexadecimal string
+            foreach (char c in dataString)
             {
-                hashValue |= (hash[i] << (8 * i)); // Combine bytes into an integer
+                hash = (hash * 37 + (int)c) % int.MaxValue;
             }
-            return hashValue;
+            return hash;
         }
-
-       
-        
     }
 }

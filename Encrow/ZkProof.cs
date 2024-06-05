@@ -1,25 +1,23 @@
 ﻿using System.Security.Cryptography;
+using System.Numerics;
 
 namespace Encrow
 {
     public class ZkProof
     {
-        private readonly int _primeModulus = 23 ;
-        private readonly int _generator = 3 ;
-        private readonly int _primeOrder = 11 ;
-     
+        private readonly int _primeModulus = 23;
+        private readonly int _generator = 3;
+        private readonly int _primeOrder = 11;
+        private readonly int _secretValue = 18;
+        private readonly int _publicKey = 2;
 
-        public ZkProof(int primeModulus, int generator, int primeOrder)
-        {
-            _primeModulus = primeModulus;
-            _generator = generator;
-            _primeOrder = primeOrder;
-           
-        }
 
-        public (int, int) ProveKnowledge(int _secretValue)
+
+
+
+        public (int, int) ProveKnowledge(int age)
         {
-            
+
 
             using (var rng = RandomNumberGenerator.Create()) // Use a secure random number generator
             {
@@ -28,16 +26,18 @@ namespace Encrow
                 int randomInteger = BitConverter.ToInt32(randomNumberBytes, 0);
                 randomInteger %= _primeOrder; // Ensure the value falls within Z_q
 
-                int publicKey = ModPow(_generator, _secretValue, _primeModulus);
+                //int publicKey = ModPow(_generator, _secretValue, _primeModulus);
                 int commitment = ModPow(_generator, randomInteger, _primeModulus);
-                int hashValue = HashFunction(commitment);
+                int hashValue = SimpleHash(commitment);
+
                 int response = (randomInteger + (_secretValue * hashValue)) % _primeOrder;
 
-                return ( commitment, response);
-                
+                return (commitment, response);
+
+
             }
         }
-        
+
         private static int ModPow(int baseValue, int exponent, int modulus)
         {
             int result = 1;
@@ -53,25 +53,16 @@ namespace Encrow
             return result;
         }
 
-        public static int HashFunction(int value)
-{
-    using (var sha256 = SHA256.Create())
-    {
-        byte[] bytes = BitConverter.GetBytes(value);
-        byte[] hash = sha256.ComputeHash(bytes);
-
-        // Truncate the hash to fit within the int range
-        int hashValue = BitConverter.ToInt32(hash, 0);
-
-        // Adjust for negative values (optional)
-        if (hashValue < 0)
+        public static int SimpleHash(int data)
         {
-            hashValue += int.MaxValue; // Wrap around to positive range (adjust as needed)
+            int hash = 0;
+            string dataString = Convert.ToString(data, 16); // Convert integer to hexadecimal string
+            foreach (char c in dataString)
+            {
+                hash = (hash * 37 + (int)c) % int.MaxValue;
+            }
+            return hash;
         }
-
-        return hashValue;
-    }
-}
 
 
         private static int ConvertToInt(byte[] hash)

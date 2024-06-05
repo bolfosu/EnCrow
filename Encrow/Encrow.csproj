@@ -81,6 +81,7 @@
 		<PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.5.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="QRCoder" Version="1.5.1" />
+		<PackageReference Include="System.Runtime.Numerics" Version="4.3.0" />
 		<PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
 	</ItemGroup>
 
