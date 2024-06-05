@@ -1,39 +1,44 @@
-﻿using System;
-using System.Text;
-using static System.Random;
-
+﻿using System.Security.Cryptography;
 
 namespace Encrow
 {
-
-
     public class ZkProof
     {
-        private readonly int _primeModulus = 11;
-        private readonly int _generator = 5;
-        private readonly int _privateKey = 23;
-        private readonly int _randomValue;
+        private readonly int _primeModulus;
+        private readonly int _generator;
+        private readonly int _primeOrder;
+        private readonly int _secretValue;
 
-        public int GeneratePublicKey()
+        public ZkProof(int primeModulus, int generator, int primeOrder, int secretValue)
         {
-            return ModPow(_generator, _privateKey, _primeModulus);
+            _primeModulus = primeModulus;
+            _generator = generator;
+            _primeOrder = primeOrder;
+            _secretValue = secretValue;
         }
 
-        public (int, int) GenerateCommitment(int randomValue)
+        public (int, int) ProveKnowledge(int _secretValue)
         {
-            Random random = new Random();
-            int _randomValue = random.Next(1, int.MaxValue); 
 
-            int commitment = ModPow(_generator, _randomValue, _primeModulus);
-            int hash = HashFunction(commitment.ToString()); // Convert commitment to string for hashing
-            int challenge = (randomValue + _privateKey * hash) % 5; // Use prime order q for modulo
+            using (var rng = RandomNumberGenerator.Create()) // Use a secure random number generator
+            {
+                byte[] randomNumberBytes = new byte[4]; // Assuming 4 bytes for integer representation
+                rng.GetBytes(randomNumberBytes);
+                int randomInteger = BitConverter.ToInt32(randomNumberBytes, 0);
+                randomInteger %= _primeOrder; // Ensure the value falls within Z_q
 
-            return (commitment, challenge);
+                int publicKey = ModPow(_generator, _secretValue, _primeModulus);
+                int commitment = ModPow(_generator, randomInteger, _primeModulus);
+                int hashValue = HashFunction(commitment);
+                int response = (randomInteger + (_secretValue * hashValue)) % _primeOrder;
+
+                return (commitment, response);
+            }
         }
 
         private static int ModPow(int baseValue, int exponent, int modulus)
         {
-            long result = 1;
+            int result = 1;
             while (exponent > 0)
             {
                 if ((exponent & 1) == 1)
@@ -43,18 +48,27 @@ namespace Encrow
                 exponent >>= 1;
                 baseValue = (baseValue * baseValue) % modulus;
             }
-            return (int)result;
+            return result;
         }
 
-        // Simple hash function (replace with a secure hash function like SHA-256 in a real application)
-        private int HashFunction(string data)
+        public static int HashFunction(int value)
         {
-            int hash = 0;
-            foreach (char c in data)
+            using (var sha256 = SHA256.Create())
             {
-                hash = (hash * 31 + (int)c) % _primeModulus; // Use prime modulus for modulo operation
+                byte[] bytes = BitConverter.GetBytes(value);
+                byte[] hash = sha256.ComputeHash(bytes);
+                return ConvertToInt(hash);
             }
-            return hash;
+        }
+
+        private static int ConvertToInt(byte[] hash)
+        {
+            int hashValue = 0;
+            for (int i = 0; i < hash.Length; i++)
+            {
+                hashValue |= (hash[i] << (8 * i)); // Combine bytes into an integer
+            }
+            return hashValue;
         }
     }
 }
