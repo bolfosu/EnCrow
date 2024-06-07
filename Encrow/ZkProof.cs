@@ -9,7 +9,7 @@ namespace Encrow
         private readonly int _generator = 3;
         private readonly int _primeOrder = 11;
         private readonly int _secretValue = 18;
-        private readonly int _publicKey = 2;
+       
 
 
 
@@ -26,7 +26,7 @@ namespace Encrow
                 int randomInteger = BitConverter.ToInt32(randomNumberBytes, 0);
                 randomInteger %= _primeOrder; // Ensure the value falls within Z_q
 
-                //int publicKey = ModPow(_generator, _secretValue, _primeModulus);
+                int publicKey = ModPow(_generator, _secretValue, _primeModulus);
                 int commitment = ModPow(_generator, randomInteger, _primeModulus);
                 int hashValue = SimpleHash(commitment);
 

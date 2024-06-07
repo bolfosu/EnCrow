@@ -3,19 +3,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:cv="clr-namespace:Camera.MAUI;assembly=Camera.MAUI"
              x:Class="Encrow.VerifierPage"
-             Title="VerifierPage"
-             >
+             Title="VerifierPage">
     <ScrollView>
         <VerticalStackLayout
-             Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+            Spacing="20"
+            Padding="20"
+            VerticalOptions="Center"
+            HorizontalOptions="Center">
 
-            <Label x:Name="qrCodeDataLabel" Text="QR Code Data: " />
+            <cv:CameraView x:Name="cameraView"
+                           WidthRequest="350"
+                           HeightRequest="300"
+                           CamerasLoaded="cameraView_CamerasLoaded"
+                           BarCodeDetectionEnabled="True"
+                           BarcodeDetected="cameraView_BarcodeDetected"
+                           BackgroundColor="Black"/>
 
-            <Label x:Name="barcodeResult" FontSize="20"/>
-            <cv:CameraView x:Name="cameraView" WidthRequest="300" HeightRequest="200" CamerasLoaded="cameraView_CamerasLoaded" BarCodeDetectionEnabled="True"
-                           BarcodeDetected="cameraView_BarcodeDetected"/>
+            <Label x:Name="barcodeResult"
+                   FontSize="20"
+                   BackgroundColor="LightGray"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Padding="10"
+                   Margin="10"/>
+
+            <Label x:Name="hashValueLabel"
+                   Text="Hash Value: "
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Padding="10"/>
+
+            <Label x:Name="commitmentLabel"
+                   Text="Commitment: "
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Padding="10"/>
+
+            <Label x:Name="responseLabel"
+                   Text="Response: "
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Padding="10"/>
 
         </VerticalStackLayout>
     </ScrollView>

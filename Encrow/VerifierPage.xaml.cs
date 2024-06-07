@@ -1,7 +1,4 @@
 using System.Numerics;
-using System.Text;
-using Camera.MAUI;
-using QRCoder;
 using System.Text.RegularExpressions;
 
 namespace Encrow
@@ -40,7 +37,6 @@ namespace Encrow
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 string qrCodeData = args.Result[0].Text;
-                qrCodeDataLabel.Text = "QR Code Data: " + qrCodeData;
 
                 // Regular expression for colon-separated values with optional whitespace and negative response
                 string pattern = @"^\s*(\d+|-?\d+)\s*,\s*(\d+)\s*(\n*)*$";
@@ -49,6 +45,7 @@ namespace Encrow
                 if (!match.Success)
                 {
                     barcodeResult.Text = "Invalid QR code format";
+                    barcodeResult.BackgroundColor = Colors.Red; // Red background for invalid format
                     return;
                 }
 
@@ -69,17 +66,23 @@ namespace Encrow
                     response = int.Parse(responseString); // Positive value
                 }
 
-                // Perform verification with SimpleHash challenge computation (for demonstration purposes)
+                // Perform verification 
                 bool verified = Verify(commitment, response);
 
-                barcodeResult.Text = verified ? "Good" : "Not Good";
+                barcodeResult.Text = verified ? "Accepted" : "Rejected";
+                barcodeResult.BackgroundColor = verified ? Colors.Green : Colors.Red; // Green for accepted, red for rejected
+                commitmentLabel.Text = "Commitment: " + commitment;
+                responseLabel.Text = "Response: " + response;
             });
         }
 
         private bool Verify(int commitment, int response)
         {
-            // Calculate hash value using SimpleHash (not cryptographically secure)
+            // Calculate hash value 
             int hashValue = SimpleHash(commitment);
+
+            // Display hash value in a new label
+            hashValueLabel.Text = "Hash Value: " + hashValue;
 
             // Calculate left side of the formula (generator raised to power of response)
             BigInteger leftSide = BigInteger.Pow(_generator, response) % _primeModulus;
