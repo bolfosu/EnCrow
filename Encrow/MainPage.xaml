@@ -2,20 +2,50 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Encrow.MainPage"
-             Title="Encow">
+             Title="Encrow"
+             BackgroundColor="#f0f4f7">
 
+    <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Padding="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-    <ScrollView BackgroundColor="#d3eaf7">
-        <StackLayout Padding="30" Spacing="25" VerticalOptions="CenterAndExpand">
+        <Label Grid.Row="0"
+               Text="Choose an option" 
+               FontSize="24" 
+               FontAttributes="Bold" 
+               HorizontalOptions="Center" 
+               VerticalOptions="Center"
+               TextColor="#555"
+               Margin="0,0,0,20"/>
 
+        <Button Grid.Row="1"
+                x:Name="ProveButton" 
+                Text="Prove" 
+                FontSize="24" 
+                BackgroundColor="#007bff" 
+                TextColor="White" 
+                Clicked="ProveButton_Clicked" 
+                CornerRadius="25" 
+                WidthRequest="250"
+                HeightRequest="70"
+                HorizontalOptions="Center"
+                Margin="0,0,0,20"/>
 
-            <!-- Buttons -->
-            <Button x:Name="ProveButton" Text="Prove" FontSize="24" BackgroundColor="#007bff" TextColor="White" 
-                    Clicked="ProveButton_Clicked" CornerRadius="25" HorizontalOptions="CenterAndExpand" />
-
-            <Button x:Name="VerifyButton" Text="Verify" FontSize="24" BackgroundColor="#28a745" TextColor="White" 
-                    Clicked="VerifyButton_Clicked" CornerRadius="25" HorizontalOptions="CenterAndExpand"/>
-        </StackLayout>
-    </ScrollView>
+        <Button Grid.Row="2"
+                x:Name="VerifyButton" 
+                Text="Verify" 
+                FontSize="24" 
+                BackgroundColor="#28a745" 
+                TextColor="White" 
+                Clicked="VerifyButton_Clicked" 
+                CornerRadius="25" 
+                WidthRequest="250"
+                HeightRequest="70"
+                HorizontalOptions="Center" 
+                Margin="0,20,0,0"/>
+    </Grid>
 
 </ContentPage>
