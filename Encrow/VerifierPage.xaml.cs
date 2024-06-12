@@ -38,39 +38,37 @@ namespace Encrow
             {
                 string qrCodeData = args.Result[0].Text;
 
-                // Regular expression for colon-separated values with optional whitespace and negative response
+                
                 string pattern = @"^\s*(\d+|-?\d+)\s*,\s*(\d+)\s*(\n*)*$";
 
                 Match match = Regex.Match(qrCodeData, pattern);
                 if (!match.Success)
                 {
                     barcodeResult.Text = "Invalid QR code format";
-                    barcodeResult.BackgroundColor = Colors.Red; // Red background for invalid format
+                    barcodeResult.BackgroundColor = Colors.Red; 
                     return;
                 }
 
                 string commitmentString = match.Groups[1].Value;
                 string responseString = match.Groups[2].Value;
 
-                // Parse commitment (positive or negative)
                 int commitment = int.Parse(commitmentString);
 
-                // Parse response (considering negative sign)
                 int response;
                 if (responseString.StartsWith("-"))
                 {
-                    response = -int.Parse(responseString.Substring(1)); // Remove leading hyphen and parse as negative
+                    response = -int.Parse(responseString.Substring(1)); 
                 }
                 else
                 {
-                    response = int.Parse(responseString); // Positive value
+                    response = int.Parse(responseString); 
                 }
 
                 // Perform verification 
                 bool verified = Verify(commitment, response);
 
                 barcodeResult.Text = verified ? "Accepted" : "Rejected";
-                barcodeResult.BackgroundColor = verified ? Colors.Green : Colors.Red; // Green for accepted, red for rejected
+                barcodeResult.BackgroundColor = verified ? Colors.Green : Colors.Red; 
                 commitmentLabel.Text = "Commitment: " + commitment;
                 responseLabel.Text = "Response: " + response;
             });
@@ -97,7 +95,7 @@ namespace Encrow
         public static int SimpleHash(int data)
         {
             int hash = 0;
-            string dataString = Convert.ToString(data, 16); // Convert integer to hexadecimal string
+            string dataString = Convert.ToString(data, 16); 
             foreach (char c in dataString)
             {
                 hash = (hash * 37 + (int)c) % int.MaxValue;

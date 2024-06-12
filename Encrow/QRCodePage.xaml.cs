@@ -38,7 +38,7 @@ namespace Encrow
         private void QRCodePage_Selfie(object sender, System.EventArgs e)
         {
             // Load the image when the page is appearing
-            UserSelfie.Source = ImageSource.FromFile("Resources/Images/mitidkvadrat.png");
+            UserSelfie.Source = ImageSource.FromFile("");
         }
     }
 }

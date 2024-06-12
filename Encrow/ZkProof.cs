@@ -8,10 +8,8 @@ namespace Encrow
         private readonly int _primeModulus = 23;
         private readonly int _generator = 3;
         private readonly int _primeOrder = 11;
-        private readonly int _secretValue = 18;
+        
        
-
-
 
 
 
@@ -19,18 +17,18 @@ namespace Encrow
         {
 
 
-            using (var rng = RandomNumberGenerator.Create()) // Use a secure random number generator
+            using (var rng = RandomNumberGenerator.Create())
             {
-                byte[] randomNumberBytes = new byte[4]; // Assuming 4 bytes for integer representation
+                byte[] randomNumberBytes = new byte[4]; 
                 rng.GetBytes(randomNumberBytes);
                 int randomInteger = BitConverter.ToInt32(randomNumberBytes, 0);
                 randomInteger %= _primeOrder; // Ensure the value falls within Z_q
 
-                int publicKey = ModPow(_generator, _secretValue, _primeModulus);
+                int publicKey = ModPow(_generator, age, _primeModulus);
                 int commitment = ModPow(_generator, randomInteger, _primeModulus);
                 int hashValue = SimpleHash(commitment);
 
-                int response = (randomInteger + (_secretValue * hashValue)) % _primeOrder;
+                int response = (randomInteger + (age * hashValue)) % _primeOrder;
 
                 return (commitment, response);
 
@@ -56,7 +54,7 @@ namespace Encrow
         public static int SimpleHash(int data)
         {
             int hash = 0;
-            string dataString = Convert.ToString(data, 16); // Convert integer to hexadecimal string
+            string dataString = Convert.ToString(data, 16); 
             foreach (char c in dataString)
             {
                 hash = (hash * 37 + (int)c) % int.MaxValue;
@@ -70,7 +68,7 @@ namespace Encrow
             int hashValue = 0;
             for (int i = 0; i < hash.Length; i++)
             {
-                hashValue |= (hash[i] << (8 * i)); // Combine bytes into an integer
+                hashValue |= (hash[i] << (8 * i)); 
             }
             return hashValue;
         }
