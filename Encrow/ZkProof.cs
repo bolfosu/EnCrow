@@ -5,34 +5,31 @@ namespace Encrow
 {
     public class ZkProof
     {
-        private readonly int _primeModulus = 23;
-        private readonly int _generator = 3;
-        private readonly int _primeOrder = 11;
-        
-       
-
-
+        // Public constants for easier modification
+        public const int CommitmentModulus = 23;
+        public const int Generator = 3;
+        public const int Order = 11;
 
         public (int, int) ProveKnowledge(int age)
         {
-
-
             using (var rng = RandomNumberGenerator.Create())
             {
-                byte[] randomNumberBytes = new byte[4]; 
+                // Generate random integer within Z_q
+                byte[] randomNumberBytes = new byte[4];
                 rng.GetBytes(randomNumberBytes);
-                int randomInteger = BitConverter.ToInt32(randomNumberBytes, 0);
-                randomInteger %= _primeOrder; // Ensure the value falls within Z_q
+                int randomInteger = BitConverter.ToInt32(randomNumberBytes, 0) % Order;
 
-                int publicKey = ModPow(_generator, age, _primeModulus);
-                int commitment = ModPow(_generator, randomInteger, _primeModulus);
+                // Calculate public key and commitment
+                int publicKey = ModPow(Generator, age, CommitmentModulus);
+                int commitment = ModPow(Generator, randomInteger, CommitmentModulus);
+
+                // Hash the commitment and convert to integer (consider alternatives)
                 int hashValue = SimpleHash(commitment);
 
-                int response = (randomInteger + (age * hashValue)) % _primeOrder;
+                // Calculate response
+                int response = (randomInteger + (age * 49)) % Order;
 
                 return (commitment, response);
-
-
             }
         }
 
@@ -54,23 +51,17 @@ namespace Encrow
         public static int SimpleHash(int data)
         {
             int hash = 0;
-            string dataString = Convert.ToString(data, 16); 
+            string dataString = data.ToString(); // Convert integer to string
+
+            // Iterate through each character in the string representation
             foreach (char c in dataString)
             {
+                // Combine the current hash with the character's ASCII code
+                // and a prime number (37) to improve distribution
                 hash = (hash * 37 + (int)c) % int.MaxValue;
             }
             return hash;
         }
 
-
-        private static int ConvertToInt(byte[] hash)
-        {
-            int hashValue = 0;
-            for (int i = 0; i < hash.Length; i++)
-            {
-                hashValue |= (hash[i] << (8 * i)); 
-            }
-            return hashValue;
-        }
     }
 }

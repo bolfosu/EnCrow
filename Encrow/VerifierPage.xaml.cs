@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
 namespace Encrow
@@ -95,12 +96,18 @@ namespace Encrow
         public static int SimpleHash(int data)
         {
             int hash = 0;
-            string dataString = Convert.ToString(data, 16); 
+            string dataString = data.ToString(); // Convert integer to string
+
+            // Iterate through each character in the string representation
             foreach (char c in dataString)
             {
+                // Combine the current hash with the character's ASCII code
+                // and a prime number (37) to improve distribution
                 hash = (hash * 37 + (int)c) % int.MaxValue;
             }
             return hash;
         }
+
+
     }
 }
