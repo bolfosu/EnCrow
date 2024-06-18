@@ -7,8 +7,9 @@ namespace Encrow
     public partial class VerifierPage : ContentPage
     {
         private readonly int _primeModulus = 23;
-        private readonly int _generator = 3;
-        private readonly int publicKey = 2;
+        public const int Order = 11;
+        private readonly int _generator = 3; // Ensure this matches the generator used in ZkProof
+        private readonly int publicKey = 10; // Make sure this is the actual public key
 
         public VerifierPage()
         {
@@ -39,14 +40,14 @@ namespace Encrow
             {
                 string qrCodeData = args.Result[0].Text;
 
-                
-                string pattern = @"^\s*(\d+|-?\d+)\s*,\s*(\d+)\s*(\n*)*$";
+                // Regex pattern to match the QR code data format
+                string pattern = @"^\s*(\d+|-?\d+)\s*,\s*(\d+|-?\d+)\s*(\n*)*$";
 
                 Match match = Regex.Match(qrCodeData, pattern);
                 if (!match.Success)
                 {
                     barcodeResult.Text = "Invalid QR code format";
-                    barcodeResult.BackgroundColor = Colors.Red; 
+                    barcodeResult.BackgroundColor = Colors.Red;
                     return;
                 }
 
@@ -58,18 +59,18 @@ namespace Encrow
                 int response;
                 if (responseString.StartsWith("-"))
                 {
-                    response = -int.Parse(responseString.Substring(1)); 
+                    response = -int.Parse(responseString.Substring(1));
                 }
                 else
                 {
-                    response = int.Parse(responseString); 
+                    response = int.Parse(responseString);
                 }
 
                 // Perform verification 
                 bool verified = Verify(commitment, response);
 
                 barcodeResult.Text = verified ? "Accepted" : "Rejected";
-                barcodeResult.BackgroundColor = verified ? Colors.Green : Colors.Red; 
+                barcodeResult.BackgroundColor = verified ? Colors.Green : Colors.Red;
                 commitmentLabel.Text = "Commitment: " + commitment;
                 responseLabel.Text = "Response: " + response;
             });
@@ -78,36 +79,34 @@ namespace Encrow
         private bool Verify(int commitment, int response)
         {
             // Calculate hash value 
-            int hashValue = SimpleHash(commitment);
+            int hashValue = HashToInt(commitment, publicKey);
 
             // Display hash value in a new label
             hashValueLabel.Text = "Hash Value: " + hashValue;
 
             // Calculate left side of the formula (generator raised to power of response)
-            BigInteger leftSide = BigInteger.Pow(_generator, response) % _primeModulus;
+            BigInteger leftSide = BigInteger.ModPow(_generator, response, _primeModulus);
 
             // Calculate right side of the formula (public key raised to hash value, multiplied by commitment)
-            BigInteger rightSide = (BigInteger.Pow(publicKey, hashValue) * commitment) % _primeModulus;
+            BigInteger rightSide = (BigInteger.ModPow(publicKey, hashValue, _primeModulus) * commitment) % _primeModulus;
 
             // Verify congruence (remainders after division by prime modulus)
             return leftSide == rightSide;
         }
 
-        public static int SimpleHash(int data)
+        private static int HashToInt(int commitment, int publicKey)
         {
-            int hash = 0;
-            string dataString = data.ToString(); // Convert integer to string
-
-            // Iterate through each character in the string representation
-            foreach (char c in dataString)
+            using (SHA256 sha256 = SHA256.Create())
             {
-                // Combine the current hash with the character's ASCII code
-                // and a prime number (37) to improve distribution
-                hash = (hash * 37 + (int)c) % int.MaxValue;
+                byte[] commitmentBytes = BitConverter.GetBytes(commitment);
+                byte[] publicKeyBytes = BitConverter.GetBytes(publicKey);
+                byte[] combined = new byte[commitmentBytes.Length + publicKeyBytes.Length];
+                Buffer.BlockCopy(commitmentBytes, 0, combined, 0, commitmentBytes.Length);
+                Buffer.BlockCopy(publicKeyBytes, 0, combined, commitmentBytes.Length, publicKeyBytes.Length);
+
+                byte[] hash = sha256.ComputeHash(combined);
+                return Math.Abs(BitConverter.ToInt32(hash, 0)) % Order;
             }
-            return hash;
         }
-
-
     }
 }

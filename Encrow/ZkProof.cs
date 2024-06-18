@@ -17,17 +17,18 @@ namespace Encrow
                 // Generate random integer within Z_q
                 byte[] randomNumberBytes = new byte[4];
                 rng.GetBytes(randomNumberBytes);
-                int randomInteger = BitConverter.ToInt32(randomNumberBytes, 0) % Order;
+                int randomInteger = Math.Abs(BitConverter.ToInt32(randomNumberBytes, 0)) % Order;
 
                 // Calculate public key and commitment
                 int publicKey = ModPow(Generator, age, CommitmentModulus);
                 int commitment = ModPow(Generator, randomInteger, CommitmentModulus);
 
-                // Hash the commitment and convert to integer (consider alternatives)
-                int hashValue = SimpleHash(commitment);
+                // Hash the commitment and public key together and convert to integer
+                int hashValue = HashToInt(commitment, publicKey);
 
                 // Calculate response
-                int response = (randomInteger + (age * 49)) % Order;
+                int response = (randomInteger + (age * hashValue)) % Order;
+                if (response < 0) response += Order;
 
                 return (commitment, response);
             }
@@ -36,32 +37,30 @@ namespace Encrow
         private static int ModPow(int baseValue, int exponent, int modulus)
         {
             int result = 1;
+            baseValue = baseValue % modulus;
             while (exponent > 0)
             {
                 if ((exponent & 1) == 1)
-                {
                     result = (result * baseValue) % modulus;
-                }
                 exponent >>= 1;
                 baseValue = (baseValue * baseValue) % modulus;
             }
             return result;
         }
 
-        public static int SimpleHash(int data)
+        private static int HashToInt(int commitment, int publicKey)
         {
-            int hash = 0;
-            string dataString = data.ToString(); // Convert integer to string
-
-            // Iterate through each character in the string representation
-            foreach (char c in dataString)
+            using (SHA256 sha256 = SHA256.Create())
             {
-                // Combine the current hash with the character's ASCII code
-                // and a prime number (37) to improve distribution
-                hash = (hash * 37 + (int)c) % int.MaxValue;
-            }
-            return hash;
-        }
+                byte[] commitmentBytes = BitConverter.GetBytes(commitment);
+                byte[] publicKeyBytes = BitConverter.GetBytes(publicKey);
+                byte[] combined = new byte[commitmentBytes.Length + publicKeyBytes.Length];
+                Buffer.BlockCopy(commitmentBytes, 0, combined, 0, commitmentBytes.Length);
+                Buffer.BlockCopy(publicKeyBytes, 0, combined, commitmentBytes.Length, publicKeyBytes.Length);
 
+                byte[] hash = sha256.ComputeHash(combined);
+                return Math.Abs(BitConverter.ToInt32(hash, 0)) % Order;
+            }
+        }
     }
 }
