@@ -10,7 +10,7 @@ namespace Encrow
         public const int Generator = 3;
         public const int Order = 11;
 
-        public (int, int) ProveKnowledge(int age)
+        public (int, int, int) ProveKnowledge(int age)
         {
             using (var rng = RandomNumberGenerator.Create())
             {
@@ -30,7 +30,7 @@ namespace Encrow
                 int response = (randomInteger + (age * hashValue)) % Order;
                 if (response < 0) response += Order;
 
-                return (commitment, response);
+                return (commitment, response, publicKey);
             }
         }
 

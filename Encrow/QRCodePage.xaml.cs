@@ -7,6 +7,7 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.ApplicationModel;
 using QRCoder;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Encrow
 {
@@ -23,10 +24,9 @@ namespace Encrow
 
         private void OnGenerateClicked(object sender, EventArgs e)
         {
-            (int commitment, int response) = zkProof.ProveKnowledge(18);
+            (int commitment, int response, int publicKey) = zkProof.ProveKnowledge(16);
 
-
-            string qrCodeData = $"{commitment},{response}";
+            string qrCodeData = $"{commitment},{response},{publicKey}";
 
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCode = qrGenerator.CreateQrCode(qrCodeData, QRCodeGenerator.ECCLevel.L);
@@ -34,6 +34,7 @@ namespace Encrow
             byte[] qrCodeBytes = qRCode.GetGraphic(20);
             QrCodeImage.Source = ImageSource.FromStream(() => new MemoryStream(qrCodeBytes));
         }
+
 
         private void QRCodePage_Selfie(object sender, System.EventArgs e)
         {

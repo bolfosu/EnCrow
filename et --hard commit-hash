@@ -1,0 +1,56 @@
+[33mb66cb3a[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m updated manifest, deleted storage, added nfc
+[33m1c252f2[m test commit
+[33m17caa2e[m implemented sha-256 , tested proof generation
+[33ma227b19[m changed hash function
+[33m6e8f2cb[m updated prove method
+[33me3a8e77[m added write permision
+[33m87e1003[m updated ui on mainPage
+[33mfdf3b4f[m updated ui on verifierPage
+[33m61521a0[m Hooray, ZKp is working
+[33mb68fb94[m Blake2 hash
+[33m6bbe797[m encoded commitment and response in qr code
+[33m95f7f9a[m added hash function and random generator
+[33m09e2928[m zpk comitment generation
+[33m8534827[m sovled qr and barcode reader
+[33m8c84252[m fixed loading errors
+[33mfb781e2[m push to test branch
+[33mb3e7a51[m fixed errors with selfie loading on QRCodePage
+[33mdb4f34b[m added UserPhoto frame to QrCodePage
+[33mbdea35b[m adjustments to ui on home page
+[33mb86e895[m removed company name from home page
+[33mb6427ec[m change UI on home page
+[33m75d1acc[m verify logic on verifier page
+[33m28658f6[m fixed errors in hash function
+[33m7509715[m comitment phase
+[33m8917a39[m generate public key
+[33m62e4759[m changed zk proof clas to component class
+[33m0fae022[m created ZK proof page
+[33m0ca8a68[m fixed suppression state error
+[33m70075c7[m deleted mitId page
+[33mb866e37[m deleted prover page
+[33mab078b1[m linked verifier button
+[33mff9ffb3[m fixed cv errors
+[33md092d20[m updated verifier page xaml
+[33m3b532f5[m qr scaning ui
+[33mbe03ae1[m add camera permision
+[33m74e68f2[m qrt scaning functionality
+[33m8614606[m created verifier page
+[33m78f2e33[m created prover page
+[33m34d8fd3[m Add authentication and authorisation middlewares to the pipeline and change endpoint mappings
+[33m9d56b3f[m Create an asynchronous method to redeem the authorisation code for tokens at token endpoint
+[33m0fccf50[m fixed mitid error
+[33m14a790c[m deleted selfie page, added authentification page
+[33me268a09[m main page buttons functionality
+[33m8d0c307[m fixed qr generator errors
+[33m3b7aadc[m Merge branch 'test'
+[33m3cd044a[m created qr code page
+[33mac794a3[m changes to mitid class
+[33mb748945[m created selfie and mitid classes
+[33mcf59a13[m created buttons on main page
+[33m93cc8a8[m created test branch, working on main page ui
+[33ma856f93[m Merge branch 'master' of https://github.com/bolfosu/EnCrow
+[33me3589fe[m Initial commit
+[33m92c7700[m Create blank.yml
+[33mbdbb6fb[m Update README.md
+[33m6977b5a[m Update .gitignore
+[33m1762513[m Initial commit

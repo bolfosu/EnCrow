@@ -8,8 +8,7 @@ namespace Encrow
     {
         private readonly int _primeModulus = 23;
         public const int Order = 11;
-        private readonly int _generator = 3; // Ensure this matches the generator used in ZkProof
-        private readonly int publicKey = 10; // Make sure this is the actual public key
+        private readonly int _generator = 3; 
 
         public VerifierPage()
         {
@@ -41,7 +40,7 @@ namespace Encrow
                 string qrCodeData = args.Result[0].Text;
 
                 // Regex pattern to match the QR code data format
-                string pattern = @"^\s*(\d+|-?\d+)\s*,\s*(\d+|-?\d+)\s*(\n*)*$";
+                string pattern = @"^\s*(\d+|-?\d+)\s*,\s*(\d+|-?\d+)\s*,\s*(\d+|-?\d+)\s*(\n*)*$";
 
                 Match match = Regex.Match(qrCodeData, pattern);
                 if (!match.Success)
@@ -53,33 +52,27 @@ namespace Encrow
 
                 string commitmentString = match.Groups[1].Value;
                 string responseString = match.Groups[2].Value;
+                string publicKeyString = match.Groups[3].Value;
 
                 int commitment = int.Parse(commitmentString);
-
-                int response;
-                if (responseString.StartsWith("-"))
-                {
-                    response = -int.Parse(responseString.Substring(1));
-                }
-                else
-                {
-                    response = int.Parse(responseString);
-                }
+                int response = int.Parse(responseString);
+                int publicKey = int.Parse(publicKeyString);
 
                 // Perform verification 
-                bool verified = Verify(commitment, response);
+                bool verified = Verify(commitment, response, publicKey);
 
                 barcodeResult.Text = verified ? "Accepted" : "Rejected";
                 barcodeResult.BackgroundColor = verified ? Colors.Green : Colors.Red;
                 commitmentLabel.Text = "Commitment: " + commitment;
                 responseLabel.Text = "Response: " + response;
+                
             });
         }
 
-        private bool Verify(int commitment, int response)
+        private bool Verify(int commitment, int response, int publicKey)
         {
             // Calculate hash value 
-            int hashValue = HashToInt(commitment, publicKey);
+            int hashValue = RandomOracle(commitment, publicKey);
 
             // Display hash value in a new label
             hashValueLabel.Text = "Hash Value: " + hashValue;
@@ -94,7 +87,7 @@ namespace Encrow
             return leftSide == rightSide;
         }
 
-        private static int HashToInt(int commitment, int publicKey)
+        private static int RandomOracle(int commitment, int publicKey)
         {
             using (SHA256 sha256 = SHA256.Create())
             {
