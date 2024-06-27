@@ -24,7 +24,7 @@ namespace Encrow
 
         private void OnGenerateClicked(object sender, EventArgs e)
         {
-            (int commitment, int response, int publicKey) = zkProof.ProveKnowledge(16);
+            (int commitment, int response, int publicKey) = zkProof.ProveKnowledge(18);
 
             string qrCodeData = $"{commitment},{response},{publicKey}";
 
