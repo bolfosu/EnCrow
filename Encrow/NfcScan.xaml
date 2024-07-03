@@ -1,10 +1,41 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Encrow.NfcScan">
-  <ContentView.Content>
-      <StackLayout>
-          <Label Text="Hello Xamarin.Forms!" />
-      </StackLayout>
-  </ContentView.Content>
-</ContentView>
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="10">
+            <Label Text="Scan Your Biometric Passport"
+                   FontSize="Large"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start" />
+
+            <Label Text="To continue, please place your biometric passport against the back of your phone to scan it using NFC."
+                   FontSize="Medium"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start" />
+
+            <StackLayout Spacing="5">
+                <Label Text="• Ensure your phone's NFC is turned on."
+                       FontSize="Small"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Start" />
+
+                <Label Text="• Hold your passport steady and close to the back of your phone."
+                       FontSize="Small"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Start" />
+
+                <Label Text="• The scanning process may take a few moments."
+                       FontSize="Small"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Start" />
+            </StackLayout>
+
+            <Label Text="Once the scan is complete, we will securely process your information."
+                   FontSize="Medium"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start" />
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
